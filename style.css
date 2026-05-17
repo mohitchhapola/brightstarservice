@@ -1,0 +1,152 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f8f6f1;
+  color: #111;
+}
+
+img {
+  max-width: 100%;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 7%;
+  background: rgba(0,0,0,0.8);
+  backdrop-filter: blur(12px);
+  z-index: 1000;
+}
+
+.logo {
+  color: #f3c44e;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+nav {
+  display: flex;
+  gap: 28px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: 0.3s ease;
+}
+
+nav a:hover,
+nav a.active {
+  color: #f3c44e;
+}
+
+.hero {
+  height: 100vh;
+  background:
+  linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+  url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=1600&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+}
+.hero-content {
+}
+
+footer a {
+  color: white;
+  text-decoration: none;
+}
+
+.copyright {
+  text-align: center;
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media(max-width: 992px) {
+
+  .hero-content h1 {
+    font-size: 52px;
+  }
+
+  .intro-card h2,
+  .offer-card h2,
+  .cta-section h2,
+  .page-banner h1,
+  .contact-container h1,
+  .quote-block h2 {
+    font-size: 42px;
+  }
+
+}
+
+@media(max-width: 768px) {
+
+  .navbar {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  nav {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .hero {
+    padding-top: 120px;
+  }
+
+  .hero-content h1 {
+    font-size: 40px;
+  }
+
+  .hero-content p {
+    font-size: 16px;
+  }
+
+  .intro-card h2,
+  .offer-card h2,
+  .cta-section h2,
+  .page-banner h1,
+  .contact-container h1,
+  .quote-block h2 {
+    font-size: 34px;
+  }
+
+  .contact-container {
+    padding: 40px 25px;
+  }
+
+}

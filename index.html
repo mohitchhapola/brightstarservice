@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="asests/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="asests/favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="asests/favicon_io/favicon-16x16.png">
+    <link rel="manifest" href="asests/favicon_io/site.webmanifest">
+    <title>Bright Star Cleaning Services | Vaughan, Ontario</title>
+    
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/history@5/umd/history.development.js"></script>
+    <script src="https://unpkg.com/react-router@6.3.0/umd/react-router.development.js"></script>
+    <script src="https://unpkg.com/react-router-dom@6.3.0/umd/react-router-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script id="tailwind-config">
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#001a33",
+              "secondary": "#d4af37",
+              "accent-blue": "#004080",
+              "surface": "#fbf9f5"
+            },
+            fontFamily: {
+              display: ["Playfair Display", "serif"],
+              sans: ["Plus Jakarta Sans", "sans-serif"]
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .navy-gradient { background: linear-gradient(135deg, #001a33 0%, #003366 100%); }
+        .gold-border { border-color: #d4af37; }
+        .glass-nav { backdrop-filter: blur(12px); background: rgba(255, 255, 255, 0.85); }
+        .parallax { background-attachment: fixed; background-position: center; background-size: cover; }
+        .card-hover:hover { transform: translateY(-10px); transition: all 0.3s ease; }
+
+        /* ── Responsive typography helpers ── */
+        @media (max-width: 640px) {
+            .hero-title    { font-size: clamp(2.5rem, 12vw, 5rem); line-height: 0.95; }
+            .section-title { font-size: clamp(2rem, 8vw, 3.5rem); }
+            .page-title    { font-size: clamp(2.2rem, 10vw, 4rem); }
+        }
+
+        /* Prevent horizontal overflow on all viewports */
+        *, *::before, *::after { box-sizing: border-box; }
+        body { overflow-x: hidden; }
+
+        /* Mobile hero text shadow for legibility */
+        .hero-text-shadow { text-shadow: 0 2px 12px rgba(0,0,0,0.5); }
+
+        /* Contact form full-width on mobile */
+        @media (max-width: 640px) {
+            .contact-grid-cols { grid-template-columns: 1fr !important; }
+        }
+
+        /* Philosophy step number positioning on mobile */
+        @media (max-width: 768px) {
+            .step-number { display: none; }
+        }
+
+        /* Smooth mobile menu transition */
+        .mobile-menu-enter  { opacity: 0; transform: translateY(-8px); }
+        .mobile-menu-active { opacity: 1; transform: translateY(0); transition: opacity 0.25s ease, transform 0.25s ease; }
+    </style>
+</head>
+<body class="bg-surface font-sans text-primary">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { MemoryRouter, Routes, Route, Link, useNavigate, useLocation } = ReactRouterDOM;
+
+        /* ─────────────────────────────────────────
+           LAYOUT
+        ───────────────────────────────────────── */
+        const Layout = ({ children }) => {
+            const { pathname } = useLocation();
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+            useEffect(() => {
+                document.body.style.overflow = isMenuOpen ? 'hidden' : 'unset';
+            }, [isMenuOpen]);
+
+            useEffect(() => {
+                window.scrollTo(0, 0);
+                setIsMenuOpen(false);
+            }, [pathname]);
+
+            const navLinks = [
+                { name: 'Home',           path: '/' },
+                { name: 'Services',       path: '/services' },
+                { name: 'Why Choose Us',  path: '/why-choose-us' },
+                { name: 'Contact',        path: '/contact' }
+            ];
+
+            return (
+                <div className="min-h-screen flex flex-col">
+                    {/* ── Navbar ── */}
+                    <nav className="fixed top-0 w-full z-[100] bg-white border-b border-gray-200">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex justify-between items-center bg-white relative z-[110]">
+                            <Link to="/" className="flex items-center gap-2 sm:gap-3">
+                                <img
+                                    src="asests/logo.jpeg"
+                                    alt="Logo"
+                                    className="h-9 sm:h-10 md:h-12 w-auto object-contain"
+                                />
+                                <div className="flex flex-col">
+                                    <span className="font-display text-base sm:text-lg font-black leading-none uppercase text-primary">Bright Star</span>
+                                    <span className="text-[9px] sm:text-[10px] uppercase tracking-widest font-bold text-secondary">Cleaning Services</span>
+                                </div>
+                            </Link>
+
+                            {/* Desktop Menu */}
+                            <div className="hidden md:flex gap-6 lg:gap-8 items-center">
+                                {navLinks.map(link => (
+                                    <Link
+                                        key={link.name}
+                                        to={link.path}
+                                        className="font-bold text-xs uppercase tracking-widest hover:text-secondary transition-colors text-primary whitespace-nowrap"
+                                    >
+                                        {link.name}
+                                    </Link>
+                                ))}
+                                <Link
+                                    to="/contact"
+                                    className="bg-secondary text-white px-5 lg:px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-widest hover:bg-primary transition-all whitespace-nowrap"
+                                >
+                                    Book Now
+                                </Link>
+                            </div>
+
+                            {/* Mobile Hamburger */}
+                            <button
+                                className="md:hidden p-2 text-primary focus:outline-none"
+                                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                                aria-label="Toggle menu"
+                            >
+                                <span className="material-symbols-outlined text-3xl">
+                                    {isMenuOpen ? 'close' : 'menu'}
+                                </span>
+                            </button>
+                        </div>
+
+                        {/* Mobile Full-screen Menu */}
+                        <div className={`fixed inset-0 bg-white z-[105] flex flex-col items-center justify-center gap-6 sm:gap-8 transition-all duration-300 ease-in-out md:hidden ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none -translate-y-2'}`}>
+                            {navLinks.map(link => (
+                                <Link
+                                    key={link.name}
+                                    to={link.path}
+                                    className="font-display text-3xl sm:text-4xl font-bold text-primary active:text-secondary"
+                                >
+                                    {link.name}
+                                </Link>
+                            ))}
+                            <Link
+                                to="/contact"
+                                className="mt-4 bg-secondary text-white px-10 py-4 rounded-full font-black uppercase tracking-widest shadow-lg"
+                            >
+                                Book Now
+                            </Link>
+                        </div>
+                    </nav>
+
+                    <main className="flex-grow pt-16 sm:pt-20">
+                        {children}
+                    </main>
+
+                    {/* ── Footer ── */}
+                    <footer className="bg-primary text-white pt-12 sm:pt-20 pb-8 sm:pb-10 relative z-10">
+                        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 mb-10">
+                                <div>
+                                    <span className="font-display text-2xl font-black uppercase text-white block mb-2">Bright Star</span>
+                                    <span className="text-[10px] uppercase tracking-widest font-bold text-secondary block mb-4">Cleaning Services</span>
+                                    <p className="text-gray-400 text-sm leading-relaxed">Professional cleaning you can trust, serving Vaughan and the GTA.</p>
+                                </div>
+                                <div>
+                                    <h4 className="text-secondary font-black uppercase tracking-widest text-xs mb-4">Quick Links</h4>
+                                    <ul className="space-y-2">
+                                        {[
+                                            { name: 'Home',          path: '/' },
+                                            { name: 'Services',      path: '/services' },
+                                            { name: 'Why Choose Us', path: '/why-choose-us' },
+                                            { name: 'Contact',       path: '/contact' }
+                                        ].map(l => (
+                                            <li key={l.name}>
+                                                <Link to={l.path} className="text-gray-400 hover:text-secondary transition-colors text-sm">{l.name}</Link>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 className="text-secondary font-black uppercase tracking-widest text-xs mb-4">Contact</h4>
+                                    <ul className="space-y-2 text-gray-400 text-sm">
+                                        <li>437-660-5449 | 437-808-8306</li>
+                                        <li>brightstarcleaning009@gmail.com</li>
+                                        <li>Vaughan, Ontario</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div className="border-t border-white/10 pt-6 text-center text-gray-600 text-xs">
+                                © {new Date().getFullYear()} Bright Star Cleaning Services. All rights reserved.
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        /* ─────────────────────────────────────────
+           HOME PAGE
+        ───────────────────────────────────────── */
+        const HomePage = () => (
+            <div className="animate-in fade-in duration-1000">
+                {/* Hero */}
+                <section className="relative min-h-[85vh] sm:h-[90vh] flex items-center bg-gray-900 overflow-hidden">
+                    <img src="asests/home.jpeg" className="absolute inset-0 w-full h-full object-cover opacity-60 scale-105" alt="Hero background" />
+                    <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-0 w-full">
+                        <div className="inline-block bg-[#d4af37] text-white px-3 sm:px-4 py-1 rounded mb-4 sm:mb-6 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] sm:tracking-[0.3em]">
+                            Top Rated in Vaughan
+                        </div>
+                        <h1 className="hero-title font-display text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-white mb-4 sm:mb-6 leading-[0.92] hero-text-shadow">
+                            Pure Spaces.<br/>
+                            <span className="italic text-[#d4af37]">Brighter Lives.</span>
+                        </h1>
+                        <p className="text-white/90 text-base sm:text-lg lg:text-xl max-w-xl sm:max-w-2xl mb-8 sm:mb-10 leading-relaxed font-light">
+                            Professional cleaning you can trust. We provide high-quality, valuable cleaning services for homes and businesses, letting you maintain a spotless and inviting environment.
+                        </p>
+                        <div className="flex flex-col xs:flex-row flex-wrap gap-3 sm:gap-4">
+                            <Link
+                                to="/services"
+                                className="text-center bg-white text-[#001a33] px-8 sm:px-10 py-4 sm:py-5 rounded-full font-black uppercase tracking-widest hover:bg-[#d4af37] hover:text-white transition-all shadow-xl text-sm sm:text-base"
+                            >
+                                Explore Services
+                            </Link>
+                            <a
+                                href="tel:4376605449"
+                                className="text-center border-2 border-white/30 text-white px-8 sm:px-10 py-4 sm:py-5 rounded-full font-black uppercase tracking-widest hover:bg-white/10 transition-all backdrop-blur-md text-sm sm:text-base"
+                            >
+                                Call 437-660-5449
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Feature Cards */}
+                <section className="py-14 sm:py-24 bg-white">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
+                        {[
+                            { icon: 'home_repair_service', title: 'Complete Care',    desc: 'From your roof to your driveway, we cover every inch of your property.' },
+                            { icon: 'eco',                 title: 'Eco-Friendly',     desc: 'Sustainable solutions that are safe for your pets, family, and the planet.' },
+                            { icon: 'schedule',            title: 'Reliable Timing',  desc: 'We value your time. Flexible scheduling that works around your busy life.' }
+                        ].map((item, i) => (
+                            <div key={i} className="text-center p-6 sm:p-8 rounded-3xl bg-gray-50 card-hover">
+                                <span className="material-symbols-outlined text-4xl sm:text-5xl text-[#d4af37] mb-4 sm:mb-6 block">{item.icon}</span>
+                                <h3 className="font-display text-xl sm:text-2xl mb-3 sm:mb-4">{item.title}</h3>
+                                <p className="text-gray-600 leading-relaxed text-sm sm:text-base">{item.desc}</p>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+
+                {/* Standards Section */}
+                <section className="py-14 sm:py-24 bg-[#001a33] text-white overflow-hidden relative">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6 grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16 items-center">
+                        <div>
+                            <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl mb-6 sm:mb-8 leading-tight italic">
+                                Exceeding standards is our baseline.
+                            </h2>
+                            <p className="text-gray-300 text-base sm:text-lg mb-6 sm:mb-8">
+                                We don't just clean; we restore. Whether it's a commercial office or a suburban home, our team applies the same "no corners cut" philosophy to every project.
+                            </p>
+                            <div className="grid grid-cols-2 gap-6 sm:gap-8">
+                                <div>
+                                    <h4 className="text-3xl sm:text-4xl font-display text-[#d4af37]">500+</h4>
+                                    <p className="text-xs uppercase tracking-widest text-gray-500 mt-1">Happy Clients</p>
+                                </div>
+                                <div>
+                                    <h4 className="text-3xl sm:text-4xl font-display text-[#d4af37]">100%</h4>
+                                    <p className="text-xs uppercase tracking-widest text-gray-500 mt-1">Satisfaction</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="relative mt-4 md:mt-0">
+                            <img src="asests/baseline.avif" className="rounded-3xl shadow-2xl md:rotate-2 w-full object-cover" alt="Our work" />
+                        </div>
+                    </div>
+                </section>
+            </div>
+        );
+
+        /* ─────────────────────────────────────────
+           SERVICES PAGE
+        ───────────────────────────────────────── */
+        const ServicesPage = () => (
+            <div className="animate-in slide-in-from-bottom-10 duration-700">
+                {/* Page Header */}
+                <section className="bg-gray-100 py-12 sm:py-20 border-b border-gray-200">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl mb-3 sm:mb-4">Our Services</h1>
+                        <p className="text-gray-500 uppercase tracking-[0.2em] sm:tracking-[0.3em] font-bold text-xs sm:text-sm">Premium Maintenance &amp; Care</p>
+                    </div>
+                </section>
+
+                {/* Services Grid */}
+                <section className="py-14 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 lg:gap-20">
+                        {/* Left Column */}
+                        <div className="space-y-8 sm:space-y-12">
+                            <div>
+                                <h2 className="font-display text-3xl sm:text-4xl mb-6 sm:mb-8 text-[#001a33]">Services</h2>
+                                <div className="space-y-3 sm:space-y-4">
+                                    {[
+                                        "Residential & Commercial Cleaning Solutions",
+                                        "Professional Landscaping Services",
+                                        "Seasonal Leaf Cleanup & Disposal",
+                                        "Eavestrough Cleaning",
+                                        "Lawn Care",
+                                        "Roof Cleaning",
+                                        "Driveway Cleaning",
+                                        "Sand and Mulch Spreading",
+                                        "Grass Cutting and Edging"
+                                    ].map(s => (
+                                        <div key={s} className="flex items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-white border-l-4 border-[#d4af37] shadow-sm hover:shadow-md transition-all group">
+                                            <span className="material-symbols-outlined text-[#d4af37] group-hover:scale-125 transition-transform shrink-0">star</span>
+                                            <span className="font-bold text-gray-800 text-sm sm:text-base">{s}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Promo Card */}
+                            <div className="bg-[#001a33] text-white p-8 sm:p-10 rounded-3xl relative overflow-hidden">
+                                <div className="relative z-10">
+                                    <h3 className="text-[#d4af37] font-black tracking-widest mb-3 sm:mb-4 text-xs sm:text-sm">EXCLUSIVE FOR YOU</h3>
+                                    <h2 className="text-3xl sm:text-4xl font-display mb-4 sm:mb-6 leading-tight">FREE CLEANING OF TRASH BINS</h2>
+                                    <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base">Maintain total hygiene. We sanitize your waste containers to prevent odors and bacteria buildup. Included with all first-time seasonal bookings.</p>
+                                    <Link to="/contact" className="inline-block bg-white text-primary px-7 sm:px-8 py-3 rounded-full font-bold text-xs sm:text-sm uppercase transition-colors hover:bg-[#d4af37] hover:text-white">Claim Offer</Link>
+                                </div>
+                                <span className="material-symbols-outlined absolute -right-10 -bottom-10 text-[160px] sm:text-[200px] opacity-5">delete_forever</span>
+                            </div>
+                        </div>
+
+                        {/* Right Column */}
+                        <div className="space-y-8 sm:space-y-12">
+                            <div className="rounded-3xl overflow-hidden shadow-2xl">
+                                <img src="asests/window.avif" className="w-full h-56 sm:h-72 md:h-[400px] object-cover" alt="Window cleaning" />
+                                <div className="p-7 sm:p-10 bg-white">
+                                    <h3 className="font-display text-2xl sm:text-3xl mb-3 sm:mb-4">Professional Window Cleaning</h3>
+                                    <p className="text-gray-600 mb-4 sm:mb-6 italic text-base sm:text-lg">"Spotless, Streak-Free, Every Time!"</p>
+                                    <p className="text-gray-500 text-sm sm:text-base">Our specialized streak-free formula ensures that your windows don't just look clear—they look invisible. Safe for all glass types and high-altitude residential windows.</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-4 sm:gap-6">
+                                <div className="bg-gray-50 p-6 sm:p-8 rounded-2xl border border-gray-100">
+                                    <h4 className="font-bold text-[#d4af37] mb-2 uppercase text-xs tracking-widest">Seasonal</h4>
+                                    <h3 className="font-display text-lg sm:text-xl mb-2 sm:mb-3">Spring Revive</h3>
+                                    <p className="text-xs sm:text-sm text-gray-500">Deep cleaning and lawn prepping for the new season.</p>
+                                </div>
+                                <div className="bg-gray-50 p-6 sm:p-8 rounded-2xl border border-gray-100">
+                                    <h4 className="font-bold text-[#d4af37] mb-2 uppercase text-xs tracking-widest">Year-Round</h4>
+                                    <h3 className="font-display text-lg sm:text-xl mb-2 sm:mb-3">Office Elite</h3>
+                                    <p className="text-xs sm:text-sm text-gray-500">Daily or weekly janitorial services for Vaughan businesses.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        );
+
+        /* ─────────────────────────────────────────
+           WHY CHOOSE US PAGE
+        ───────────────────────────────────────── */
+        const WhyChooseUsPage = () => (
+            <div className="animate-in fade-in duration-700">
+                {/* Hero Banner */}
+                <section className="h-[45vh] sm:h-[60vh] relative flex items-center justify-center text-white">
+                    <img src="asests/why.avif" className="absolute inset-0 w-full h-full object-cover" alt="Why choose us" />
+                    <div className="absolute inset-0 bg-[#001a33]/80"></div>
+                    <div className="relative text-center px-4 sm:px-6 max-w-4xl mx-auto">
+                        <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4 sm:mb-6 italic leading-tight">The Bright Star Standard</h1>
+                        <p className="max-w-xl sm:max-w-2xl mx-auto text-base sm:text-lg lg:text-xl text-gray-300 font-light">
+                            Why homeowners and property managers across Ontario choose us for their most critical maintenance needs.
+                        </p>
+                    </div>
+                </section>
+
+                {/* Features + Philosophy */}
+                <section className="py-14 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6">
+                    {/* Feature Grid */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 mb-14 sm:mb-24">
+                        {[
+                            { icon: 'payments',          title: 'Affordable & Transparent Pricing', desc: 'No hidden fees. We provide detailed quotes so you know exactly what you are paying for before we start.' },
+                            { icon: 'diversity_3',        title: 'Experienced & Friendly Team',      desc: 'Our staff are more than just cleaners—they are trained professionals who take pride in their craft.' },
+                            { icon: 'event_repeat',       title: 'Flexible Scheduling',              desc: 'Mornings, evenings, or weekends. We fit into your schedule to minimize disruption.' },
+                            { icon: 'workspace_premium',  title: '100% Satisfaction Guaranteed',    desc: 'If you are not happy with any part of our service, we will return to make it right. No questions asked.' }
+                        ].map((item, i) => (
+                            <div key={i} className="flex gap-5 sm:gap-8 group">
+                                <div className="w-12 h-12 sm:w-16 sm:h-16 shrink-0 bg-[#fbf9f5] border-2 border-[#d4af37] rounded-2xl flex items-center justify-center group-hover:bg-[#d4af37] transition-all">
+                                    <span className="material-symbols-outlined text-[#d4af37] group-hover:text-white">{item.icon}</span>
+                                </div>
+                                <div>
+                                    <h3 className="font-display text-xl sm:text-2xl mb-2 sm:mb-4">{item.title}</h3>
+                                    <p className="text-gray-500 leading-relaxed text-sm sm:text-base">{item.desc}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* Cleaning Philosophy */}
+                    <div className="bg-gray-50 rounded-[2rem] sm:rounded-[4rem] p-8 sm:p-12 lg:p-16 text-center">
+                        <h2 className="font-display text-3xl sm:text-4xl mb-10 sm:mb-16 italic">Our Cleaning Philosophy</h2>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
+                            {[
+                                { step: 'Step 1: Inspect',   img: 'asests/inspect.jpeg', desc: 'Detailed site assessment to identify specific needs.' },
+                                { step: 'Step 2: Prepare',   img: 'asests/prepare.avif', desc: 'Setting up eco-friendly solutions and safety zones.' },
+                                { step: 'Step 3: Sanitize',  img: 'asests/sanitize.avif', desc: 'Deep medical-grade cleaning and disinfection.' },
+                                { step: 'Step 4: Verify',    img: 'asests/verify.avif',  desc: 'Final walkthrough to ensure a streak-free finish.' }
+                            ].map((item, i) => (
+                                <div key={i} className="relative group">
+                                    <div className="overflow-hidden rounded-xl sm:rounded-2xl mb-3 sm:mb-6 shadow-lg h-32 sm:h-40 md:h-48">
+                                        <img
+                                            src={item.img}
+                                            alt={item.step}
+                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                                        />
+                                    </div>
+                                    <div className="step-number text-5xl sm:text-6xl font-display text-gray-200 absolute -top-12 left-1/2 -translate-x-1/2 -z-10 opacity-50">{i + 1}</div>
+                                    <h4 className="font-black uppercase tracking-tighter text-[10px] sm:text-sm mb-1 sm:mb-2 text-[#001a33]">{item.step}</h4>
+                                    <p className="text-[10px] sm:text-xs text-gray-500 px-1 sm:px-4">{item.desc}</p>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            </div>
+        );
+
+        /* ─────────────────────────────────────────
+           CONTACT PAGE
+        ───────────────────────────────────────── */
+        const ContactPage = () => (
+            <div className="animate-in fade-in duration-700">
+                <section className="py-14 sm:py-24 bg-white">
+                    <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 lg:gap-20">
+                            {/* Contact Info */}
+                            <div>
+                                <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl mb-6 sm:mb-8 leading-none">
+                                    Ready for a<br/>
+                                    <span className="text-[#d4af37]">Cleaner Space?</span>
+                                </h1>
+                                <p className="text-base sm:text-lg text-gray-600 mb-8 sm:mb-12">
+                                    Reach out today for a free estimate or to schedule your first appointment. Our team is standing by to help.
+                                </p>
+
+                                <div className="space-y-7 sm:space-y-10">
+                                    <div className="flex gap-4 sm:gap-6 items-start sm:items-center">
+                                        <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-full bg-gray-100 flex items-center justify-center text-[#d4af37]">
+                                            <span className="material-symbols-outlined">call</span>
+                                        </div>
+                                        <div>
+                                            <p className="text-xs uppercase font-black text-gray-400 tracking-widest mb-1">Call/Text Us</p>
+                                            <p className="text-base sm:text-xl font-bold">437-660-5449 | 437-808-8306</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4 sm:gap-6 items-start sm:items-center">
+                                        <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-full bg-gray-100 flex items-center justify-center text-[#d4af37]">
+                                            <span className="material-symbols-outlined">location_on</span>
+                                        </div>
+                                        <div>
+                                            <p className="text-xs uppercase font-black text-gray-400 tracking-widest mb-1">Our Base</p>
+                                            <p className="text-base sm:text-xl font-bold">Vaughan, Ontario</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex gap-4 sm:gap-6 items-start sm:items-center">
+                                        <div className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 rounded-full bg-gray-100 flex items-center justify-center text-[#d4af37]">
+                                            <span className="material-symbols-outlined">mail</span>
+                                        </div>
+                                        <div>
+                                            <p className="text-xs uppercase font-black text-gray-400 tracking-widest mb-1">Email</p>
+                                            <p className="text-sm sm:text-lg lg:text-xl font-bold break-all">brightstarcleaning009@gmail.com</p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Social Card */}
+                                <div className="mt-10 sm:mt-16 p-7 sm:p-8 bg-[#001a33] text-white rounded-3xl">
+                                    <h4 className="text-[#d4af37] font-black tracking-widest text-xs mb-4 sm:mb-6 uppercase">Follow our Work</h4>
+                                    <div className="space-y-2 sm:space-y-3 font-bold text-sm sm:text-base">
+                                        <p className="flex justify-between border-b border-white/10 pb-2"><span>Facebook</span> <span className="text-[#d4af37]">@bright0296</span></p>
+                                        <p className="flex justify-between border-b border-white/10 pb-2"><span>Instagram</span> <span className="text-[#d4af37]">@bright0296</span></p>
+                                        <p className="flex justify-between"><span>TikTok</span> <span className="text-[#d4af37]">@bright0296</span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Quote Form */}
+                            <div className="bg-gray-50 p-8 sm:p-10 lg:p-12 rounded-[2rem] sm:rounded-[3rem] shadow-inner">
+                                <h3 className="font-display text-2xl sm:text-3xl mb-6 sm:mb-8">Request a Quote</h3>
+                                <form className="space-y-4 sm:space-y-6" onSubmit={(e) => e.preventDefault()}>
+                                    <div className="grid grid-cols-1 xs:grid-cols-2 gap-4 sm:gap-6">
+                                        <input type="text" placeholder="First Name" className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base" />
+                                        <input type="text" placeholder="Last Name"  className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base" />
+                                    </div>
+                                    <input type="email" placeholder="Email Address" className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base" />
+                                    <select className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base text-gray-700">
+                                        <option>Select Service</option>
+                                        <option>Residential Cleaning</option>
+                                        <option>Commercial Cleaning</option>
+                                        <option>Window Cleaning</option>
+                                        <option>Landscaping</option>
+                                    </select>
+                                    <textarea placeholder="Tell us about your space..." rows="4" className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base resize-none"></textarea>
+                                    <button className="w-full bg-[#001a33] text-[#d4af37] py-4 sm:py-5 rounded-xl font-black uppercase tracking-widest hover:bg-[#d4af37] hover:text-white transition-all text-sm sm:text-base">
+                                        Send Message
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Map Section */}
+                <section className="h-[380px] sm:h-[500px] w-full bg-gray-100 overflow-hidden relative group">
+                    <img
+                        src="asests/map.jpeg"
+                        alt="Vaughan Service Area"
+                        className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-1000 grayscale group-hover:grayscale-0"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center bg-[#001a33]/20 px-4">
+                        <div className="bg-white/95 backdrop-blur-md p-7 sm:p-10 rounded-[2rem] sm:rounded-[2.5rem] shadow-2xl text-center w-full max-w-xs sm:max-w-sm border border-white/20 transform group-hover:scale-105 transition-transform duration-500">
+                            <div className="w-12 h-12 sm:w-16 sm:h-16 bg-[#d4af37] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg">
+                                <span className="material-symbols-outlined text-white text-2xl sm:text-3xl">location_on</span>
+                            </div>
+                            <h4 className="font-display text-2xl sm:text-3xl mb-2 sm:mb-3 text-[#001a33]">Serving All of Vaughan and GTA</h4>
+                            <p className="text-gray-600 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base">
+                                From Maple and Woodbridge to Kleinburg and Thornhill, we provide premium care across the entire region.
+                            </p>
+                            <div className="inline-flex items-center gap-2 text-[#d4af37] font-black uppercase tracking-widest text-xs">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#d4af37] opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#d4af37]"></span>
+                                </span>
+                                Local &amp; Reliable
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        );
+
+        /* ─────────────────────────────────────────
+           APP ROOT
+        ───────────────────────────────────────── */
+        const App = () => (
+            <MemoryRouter>
+                <Layout>
+                    <Routes>
+                        <Route path="/"              element={<HomePage />} />
+                        <Route path="/services"      element={<ServicesPage />} />
+                        <Route path="/why-choose-us" element={<WhyChooseUsPage />} />
+                        <Route path="/contact"       element={<ContactPage />} />
+                    </Routes>
+                </Layout>
+            </MemoryRouter>
+        );
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
