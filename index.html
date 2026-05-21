@@ -450,10 +450,73 @@
             </div>
         );
 
+        
+const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+    const elements = form.elements;
+
+const name = ((elements && elements.name && elements.name.value) || '').trim();
+
+const email = ((elements && elements.email && elements.email.value) || '').trim();
+
+const service = ((elements && elements.service && elements.service.value) || '').trim();
+
+const message = ((elements && elements.message && elements.message.value) || '').trim();
+
+    const toEmail = 'brightstarcleaning009@gmail.com';
+
+    const validateEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+
+    // Basic validation
+    if (!name || !email || !message) {
+        alert('Please fill out your name, email, and message.');
+        return;
+    }
+    if (!validateEmail(email)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+    if (!service) {
+        alert('Please select a service.');
+        return;
+    }
+
+    const subject = `Quote Request - ${service}`;
+    const body = `
+Hello Team,
+
+You have received a new contact inquiry from your website.
+
+Contact Details
+
+Name: ${name}
+Email: ${email}
+Service Interested In: ${service}
+
+Message
+
+${message}
+
+Please respond to the customer at your earliest convenience.
+
+Best Regards,
+Website Contact System
+`.trim();
+
+    const mailtoLink = `mailto:${encodeURIComponent(toEmail)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    // Opens user's mail client with prefilled info
+    window.location.href = mailtoLink;
+};
         /* ─────────────────────────────────────────
            CONTACT PAGE
         ───────────────────────────────────────── */
         const ContactPage = () => (
+
+        
+
             <div className="animate-in fade-in duration-700">
                 <section className="py-14 sm:py-24 bg-white">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6">
@@ -512,20 +575,20 @@
                             {/* Quote Form */}
                             <div className="bg-gray-50 p-8 sm:p-10 lg:p-12 rounded-[2rem] sm:rounded-[3rem] shadow-inner">
                                 <h3 className="font-display text-2xl sm:text-3xl mb-6 sm:mb-8">Request a Quote</h3>
-                                <form className="space-y-4 sm:space-y-6" onSubmit={(e) => e.preventDefault()}>
-                                    <div className="grid grid-cols-1 xs:grid-cols-2 gap-4 sm:gap-6">
-                                        <input type="text" placeholder="First Name" className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base" />
+                                <form className="space-y-4 sm:space-y-6" onSubmit={(e) => handleSubmit(e)}>
+<div className="grid grid-cols-1 xs:grid-cols-2 gap-4 sm:gap-6">
+                                        <input type="text" name="name" placeholder="First Name" className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base" />
                                         <input type="text" placeholder="Last Name"  className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base" />
                                     </div>
-                                    <input type="email" placeholder="Email Address" className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base" />
-                                    <select className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base text-gray-700">
+<input type="email" name="email" placeholder="Email Address" className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base" />
+<select name="service" className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base text-gray-700">
                                         <option>Select Service</option>
                                         <option>Residential Cleaning</option>
                                         <option>Commercial Cleaning</option>
                                         <option>Window Cleaning</option>
                                         <option>Landscaping</option>
                                     </select>
-                                    <textarea placeholder="Tell us about your space..." rows="4" className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base resize-none"></textarea>
+<textarea name="message" placeholder="Tell us about your space..." rows="4" className="w-full bg-white border-none rounded-xl p-3.5 sm:p-4 shadow-sm outline-[#d4af37] text-sm sm:text-base resize-none"></textarea>
                                     <button className="w-full bg-[#001a33] text-[#d4af37] py-4 sm:py-5 rounded-xl font-black uppercase tracking-widest hover:bg-[#d4af37] hover:text-white transition-all text-sm sm:text-base">
                                         Send Message
                                     </button>
