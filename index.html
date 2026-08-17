@@ -239,7 +239,7 @@
             <div className="animate-in fade-in duration-1000">
                 {/* Hero */}
                 <section className="relative min-h-[85vh] sm:h-[90vh] flex items-center bg-gray-900 overflow-hidden">
-                    <img src="asests/home.jpeg" className="absolute inset-0 w-full h-full object-cover opacity-60 scale-105" alt="Hero background" />
+                    <img src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=80" className="absolute inset-0 w-full h-full object-cover opacity-60 scale-105" alt="Hero background" />
                     <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-0 w-full">
                         <div className="inline-block bg-[#d4af37] text-white px-3 sm:px-4 py-1 rounded mb-4 sm:mb-6 text-[10px] sm:text-xs font-black uppercase tracking-[0.2em] sm:tracking-[0.3em]">
                             Top Rated in Vaughan
@@ -306,7 +306,7 @@ Professional property care you can trust. We provide high-quality cleaning, land
                             </div>
                         </div>
                         <div className="relative mt-4 md:mt-0">
-                            <img src="asests/baseline.avif" className="rounded-3xl shadow-2xl md:rotate-2 w-full object-cover" alt="Our work" />
+                            <img src="https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=1200&q=80" className="rounded-3xl shadow-2xl md:rotate-2 w-full object-cover" alt="Our work" />
                         </div>
                     </div>
                 </section>
@@ -316,83 +316,264 @@ Professional property care you can trust. We provide high-quality cleaning, land
         /* ─────────────────────────────────────────
            SERVICES PAGE
         ───────────────────────────────────────── */
-        const ServicesPage = () => (
-            <div className="animate-in slide-in-from-bottom-10 duration-700">
-                {/* Page Header */}
-                <section className="bg-gray-100 py-12 sm:py-20 border-b border-gray-200">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl mb-3 sm:mb-4">Our Services</h1>
-                        <p className="text-gray-500 uppercase tracking-[0.2em] sm:tracking-[0.3em] font-bold text-xs sm:text-sm">Premium Maintenance &amp; Care</p>
-                    </div>
-                </section>
 
-                {/* Services Grid */}
-                <section className="py-14 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6">
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 lg:gap-20">
-                        {/* Left Column */}
-                        <div className="space-y-8 sm:space-y-12">
-                            <div>
-                                <h2 className="font-display text-3xl sm:text-4xl mb-6 sm:mb-8 text-[#001a33]">Services</h2>
-                                <div className="space-y-3 sm:space-y-4">
-                                    {[
-                                        "Residential & Commercial Cleaning Solutions",
-                                        "Professional Landscaping Services",
-                                        "Seasonal Leaf Cleanup & Disposal",
-                                        "Eavestrough Cleaning",
-                                        "Lawn Care",
-                                        "Roof Cleaning",
-                                        "Driveway Cleaning",
-                                        "Sand and Mulch Spreading",
-                                        "Grass Cutting and Edging"
-                                    ].map(s => (
-                                        <div key={s} className="flex items-center gap-3 sm:gap-4 p-4 sm:p-5 bg-white border-l-4 border-[#d4af37] shadow-sm hover:shadow-md transition-all group">
-                                            <span className="material-symbols-outlined text-[#d4af37] group-hover:scale-125 transition-transform shrink-0">star</span>
-                                            <span className="font-bold text-gray-800 text-sm sm:text-base">{s}</span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
 
-                            {/* Promo Card */}
-                            <div className="bg-[#001a33] text-white p-8 sm:p-10 rounded-3xl relative overflow-hidden">
-                                <div className="relative z-10">
-                                    <h3 className="text-[#d4af37] font-black tracking-widest mb-3 sm:mb-4 text-xs sm:text-sm">EXCLUSIVE FOR YOU</h3>
-                                    <h2 className="text-3xl sm:text-4xl font-display mb-4 sm:mb-6 leading-tight">FREE CLEANING OF TRASH BINS</h2>
-                                    <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base">Maintain total hygiene. We sanitize your waste containers to prevent odors and bacteria buildup. Included with all first-time seasonal bookings.</p>
-                                    <Link to="/contact" className="inline-block bg-white text-primary px-7 sm:px-8 py-3 rounded-full font-bold text-xs sm:text-sm uppercase transition-colors hover:bg-[#d4af37] hover:text-white">Claim Offer</Link>
-                                </div>
-                                <span className="material-symbols-outlined absolute -right-10 -bottom-10 text-[160px] sm:text-[200px] opacity-5">delete_forever</span>
-                            </div>
+
+
+
+const ServicesPage = () => {
+    const [expandedService, setExpandedService] = useState(null);
+
+    const services = [
+        {
+            name: "Residential & Commercial Cleaning Solutions",
+            images: [
+                "/asests/commercial/comcleaning1.avif",
+                "/asests/commercial/comclean2.avif",
+                "/asests/commercial/comclean3.avif",
+            ]
+        },
+        {
+            name: "Professional Landscaping Services",
+            images: [
+                "/asests/professional/plservice1.avif",
+                "/asests/professional/plservice2.avif",
+                "/asests/professional/plservice3.avif"
+            ]
+        },
+        {
+            name: "Seasonal Leaf Cleanup & Disposal",
+            images: [
+                "/asests/seasonal/sclean1.avif",
+                "/asests/seasonal/sclean2.avif",
+                "/asests/seasonal/sclean3.avif",
+                "/asests/seasonal/disposal1.webp",
+            ]
+        },
+        {
+            name: "Eavestrough Cleaning",
+            images: [
+                "/asests/eaves/eclean1.avif",
+                "/asests/eaves/eclean2.avif",
+                "/asests/eaves/eclean3.avif",
+            ]
+        },
+        {
+            name: "Lawn Care",
+            images: [
+               "/asests/lawn/lawn1.avif",
+                "/asests/lawn/lawn2.avif",
+                "/asests/lawn/lawn3.avif",
+            ]
+        },
+        {
+            name: "Roof Cleaning",
+            images: [
+                "/asests/roof/roof1.webp",
+                "/asests/roof/roof2.webp",
+                "/asests/roof/roof3.webp"
+            ]
+        },
+        {
+            name: "Driveway Cleaning",
+            images: [
+                "/asests/driveway/driveway1.webp",
+                "/asests/driveway/driveway2.webp",
+                "/asests/driveway/driveway2.avif",
+
+            ]
+        },
+        {
+            name: "Sand and Mulch Spreading",
+            images: [
+                "/asests/sand/sand1.avif",
+                "/asests/sand/sand2.avif",
+                "/asests/sand/sand3.avif",
+            ]
+        },
+        {
+            name: "Grass Cutting and Edging",
+            images: [
+              "/asests/grass/grass1.avif",
+                "/asests/grass/grass2.avif",
+                "/asests/grass/grass3.avif",
+            ]
+        }
+    ];
+
+    const toggleService = (serviceName) => {
+        setExpandedService(prev => (prev === serviceName ? null : serviceName));
+    };
+    
+    const ServiceItem = ({ service, isExpanded, onToggle }) => {
+        const [currentIndex, setCurrentIndex] = useState(0);
+
+        useEffect(() => {
+            let interval;
+            if (isExpanded && service.images.length > 1) {
+                interval = setInterval(() => {
+                    setCurrentIndex(prevIndex => (prevIndex + 1) % service.images.length);
+                }, 3000);
+            }
+            return () => {
+                if (interval) clearInterval(interval);
+            };
+        }, [isExpanded, service.images.length]);
+
+        const nextImage = (e) => {
+            e.stopPropagation();
+            setCurrentIndex(prevIndex => (prevIndex + 1) % service.images.length);
+        };
+
+        const prevImage = (e) => {
+            e.stopPropagation();
+            setCurrentIndex(prevIndex => (prevIndex - 1 + service.images.length) % service.images.length);
+        };
+
+        const goToSlide = (e, index) => {
+            e.stopPropagation();
+            setCurrentIndex(index);
+        };
+
+        return (
+            <div 
+                onClick={onToggle}
+                className="bg-white border-l-4 border-[#d4af37] shadow-sm hover:shadow-md transition-all group cursor-pointer"
+            >
+                {/* Service Title Row */}
+                <div className="flex items-center gap-3 sm:gap-4 p-4 sm:p-5">
+                    <span className="material-symbols-outlined text-[#d4af37] group-hover:scale-125 transition-transform shrink-0">star</span>
+                    <span className="font-bold text-gray-800 text-sm sm:text-base">{service.name}</span>
+                    <span className={`material-symbols-outlined ml-auto text-gray-400 transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
+                        expand_more
+                    </span>
+                </div>
+
+                {/* Collapsible Image Section */}
+                <div 
+                    className={`transition-all duration-500 ease-in-out overflow-hidden px-4 sm:px-5 ${
+                        isExpanded ? 'max-h-96 opacity-100 pb-4 sm:pb-5' : 'max-h-0 opacity-0'
+                    }`}
+                >
+                    {/* group/carousel allows us to hide/show arrows on hover over the image */}
+                    <div className="relative rounded-lg border border-gray-100 overflow-hidden h-48 sm:h-56 group/carousel">
+                        
+                        {/* 
+                          SLIDING TRACK: 
+                          This flex container holds all images side-by-side. 
+                          We use translateX to smoothly slide the whole container left or right. 
+                        */}
+                        <div 
+                            className="flex w-full h-full transition-transform duration-500 ease-in-out"
+                            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                        >
+                            {service.images.map((imgUrl, index) => (
+                                <img
+                                    key={index}
+                                    src={imgUrl}
+                                    alt={`${service.name} view ${index + 1}`}
+                                    className="w-full h-full object-cover shrink-0"
+                                />
+                            ))}
                         </div>
 
-                        {/* Right Column */}
-                        <div className="space-y-8 sm:space-y-12">
-                            <div className="rounded-3xl overflow-hidden shadow-2xl">
-                                <img src="asests/window.avif" className="w-full h-56 sm:h-72 md:h-[400px] object-cover" alt="Window cleaning" />
-                                <div className="p-7 sm:p-10 bg-white">
-                                    <h3 className="font-display text-2xl sm:text-3xl mb-3 sm:mb-4">Professional Window Cleaning</h3>
-                                    <p className="text-gray-600 mb-4 sm:mb-6 italic text-base sm:text-lg">"Spotless, Streak-Free, Every Time!"</p>
-                                    <p className="text-gray-500 text-sm sm:text-base">Our specialized streak-free formula ensures that your windows don't just look clear—they look invisible. Safe for all glass types and high-altitude residential windows.</p>
-                                </div>
-                            </div>
+                        {/* Arrows - fade in on hover */}
+                        <div className="absolute inset-0 flex items-center justify-between px-2 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300">
+                            <button onClick={prevImage} className="bg-black/40 text-white rounded-full h-8 w-8 flex items-center justify-center hover:bg-black/60 transition-colors">
+                                <span className="material-symbols-outlined block">chevron_left</span>
+                            </button>
+                            <button onClick={nextImage} className="bg-black/40 text-white rounded-full h-8 w-8 flex items-center justify-center hover:bg-black/60 transition-colors">
+                                <span className="material-symbols-outlined block">chevron_right</span>
+                            </button>
+                        </div>
 
-                            <div className="grid grid-cols-2 gap-4 sm:gap-6">
-                                <div className="bg-gray-50 p-6 sm:p-8 rounded-2xl border border-gray-100">
-                                    <h4 className="font-bold text-[#d4af37] mb-2 uppercase text-xs tracking-widest">Seasonal</h4>
-                                    <h3 className="font-display text-lg sm:text-xl mb-2 sm:mb-3">Spring Revive</h3>
-                                    <p className="text-xs sm:text-sm text-gray-500">Deep cleaning and lawn prepping for the new season.</p>
-                                </div>
-                                <div className="bg-gray-50 p-6 sm:p-8 rounded-2xl border border-gray-100">
-                                    <h4 className="font-bold text-[#d4af37] mb-2 uppercase text-xs tracking-widest">Year-Round</h4>
-                                    <h3 className="font-display text-lg sm:text-xl mb-2 sm:mb-3">Office Elite</h3>
-                                    <p className="text-xs sm:text-sm text-gray-500">Daily or weekly janitorial services for Vaughan businesses.</p>
-                                </div>
-                            </div>
+                        {/* Interactive Dots */}
+                         <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+                            {service.images.map((_, index) => (
+                                <div
+                                    key={index}
+                                    onClick={(e) => goToSlide(e, index)}
+                                    className={`w-2 h-2 rounded-full cursor-pointer transition-all duration-300 ${index === currentIndex ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/80'}`}
+                                ></div>
+                            ))}
                         </div>
                     </div>
-                </section>
+                </div>
             </div>
         );
+    };
+
+    return (
+        <div className="animate-in slide-in-from-bottom-10 duration-700">
+            {/* Page Header */}
+            <section className="bg-gray-100 py-12 sm:py-20 border-b border-gray-200">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6">
+                    <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl mb-3 sm:mb-4">Our Services</h1>
+                    <p className="text-gray-500 uppercase tracking-[0.2em] sm:tracking-[0.3em] font-bold text-xs sm:text-sm">Premium Maintenance &amp; Care</p>
+                </div>
+            </section>
+
+            {/* Services Grid */}
+            <section className="py-14 sm:py-24 max-w-7xl mx-auto px-4 sm:px-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-16 lg:gap-20">
+                    {/* Left Column */}
+                    <div className="space-y-8 sm:space-y-12">
+                        <div>
+                            <h2 className="font-display text-3xl sm:text-4xl mb-6 sm:mb-8 text-[#001a33]">Services</h2>
+                            <div className="space-y-3 sm:space-y-4">
+                                {services.map(s => (
+                                    <ServiceItem 
+                                        key={s.name}
+                                        service={s}
+                                        isExpanded={expandedService === s.name}
+                                        onToggle={() => toggleService(s.name)}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Promo Card */}
+                        <div className="bg-[#001a33] text-white p-8 sm:p-10 rounded-3xl relative overflow-hidden">
+                            <div className="relative z-10">
+                                <h3 className="text-[#d4af37] font-black tracking-widest mb-3 sm:mb-4 text-xs sm:text-sm">EXCLUSIVE FOR YOU</h3>
+                                <h2 className="text-3xl sm:text-4xl font-display mb-4 sm:mb-6 leading-tight">FREE CLEANING OF TRASH BINS</h2>
+                                <p className="text-gray-400 mb-6 sm:mb-8 text-sm sm:text-base">Maintain total hygiene. We sanitize your waste containers to prevent odors and bacteria buildup. Included with all first-time seasonal bookings.</p>
+                                <Link to="/contact" className="inline-block bg-white text-[#001a33] px-7 sm:px-8 py-3 rounded-full font-bold text-xs sm:text-sm uppercase transition-colors hover:bg-[#d4af37] hover:text-white">Claim Offer</Link>
+                            </div>
+                            <span className="material-symbols-outlined absolute -right-10 -bottom-10 text-[160px] sm:text-[200px] opacity-5">delete_forever</span>
+                        </div>
+                    </div>
+
+                    {/* Right Column */}
+                    <div className="space-y-8 sm:space-y-12">
+                        <div className="rounded-3xl overflow-hidden shadow-2xl">
+                            <img src="https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&w=1200&q=80" className="w-full h-56 sm:h-72 md:h-[400px] object-cover" alt="Window cleaning" />
+                            <div className="p-7 sm:p-10 bg-white">
+                                <h3 className="font-display text-2xl sm:text-3xl mb-3 sm:mb-4">Professional Window Cleaning</h3>
+                                <p className="text-gray-600 mb-4 sm:mb-6 italic text-base sm:text-lg">"Spotless, Streak-Free, Every Time!"</p>
+                                <p className="text-gray-500 text-sm sm:text-base">Our specialized streak-free formula ensures that your windows don't just look clear—they look invisible. Safe for all glass types and high-altitude residential windows.</p>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-4 sm:gap-6">
+                            <div className="bg-gray-50 p-6 sm:p-8 rounded-2xl border border-gray-100">
+                                <h4 className="font-bold text-[#d4af37] mb-2 uppercase text-xs tracking-widest">Seasonal</h4>
+                                <h3 className="font-display text-lg sm:text-xl mb-2 sm:mb-3">Spring Revive</h3>
+                                <p className="text-xs sm:text-sm text-gray-500">Deep cleaning and lawn prepping for the new season.</p>
+                            </div>
+                            <div className="bg-gray-50 p-6 sm:p-8 rounded-2xl border border-gray-100">
+                                <h4 className="font-bold text-[#d4af37] mb-2 uppercase text-xs tracking-widest">Year-Round</h4>
+                                <h3 className="font-display text-lg sm:text-xl mb-2 sm:mb-3">Office Elite</h3>
+                                <p className="text-xs sm:text-sm text-gray-500">Daily or weekly janitorial services for Vaughan businesses.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    );
+};
+
 
         /* ─────────────────────────────────────────
            WHY CHOOSE US PAGE
@@ -401,7 +582,7 @@ Professional property care you can trust. We provide high-quality cleaning, land
             <div className="animate-in fade-in duration-700">
                 {/* Hero Banner */}
                 <section className="h-[45vh] sm:h-[60vh] relative flex items-center justify-center text-white">
-                    <img src="asests/why.avif" className="absolute inset-0 w-full h-full object-cover" alt="Why choose us" />
+                    <img src="https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=1600&q=80" className="absolute inset-0 w-full h-full object-cover" alt="Why choose us" />
                     <div className="absolute inset-0 bg-[#001a33]/80"></div>
                     <div className="relative text-center px-4 sm:px-6 max-w-4xl mx-auto">
                         <h1 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl mb-4 sm:mb-6 italic leading-tight">The Kamet Standard</h1>
@@ -438,10 +619,10 @@ Professional property care you can trust. We provide high-quality cleaning, land
                         <h2 className="font-display text-3xl sm:text-4xl mb-10 sm:mb-16 italic">Our Cleaning Philosophy</h2>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 lg:gap-12">
                             {[
-                                { step: 'Step 1: Inspect',   img: 'asests/inspect.jpeg', desc: 'Detailed site assessment to identify specific needs.' },
-                                { step: 'Step 2: Prepare',   img: 'asests/prepare.avif', desc: 'Setting up eco-friendly solutions and safety zones.' },
-                                { step: 'Step 3: Sanitize',  img: 'asests/sanitize.avif', desc: 'Deep medical-grade cleaning and disinfection.' },
-                                { step: 'Step 4: Verify',    img: 'asests/verify.avif',  desc: 'Final walkthrough to ensure a streak-free finish.' }
+                                { step: 'Step 1: Inspect',   img: 'https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=900&q=80', desc: 'Detailed site assessment to identify specific needs.' },
+                                { step: 'Step 2: Prepare',   img: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=900&q=80', desc: 'Setting up eco-friendly solutions and safety zones.' },
+                                { step: 'Step 3: Sanitize',  img: 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=900&q=80', desc: 'Deep medical-grade cleaning and disinfection.' },
+                                { step: 'Step 4: Verify',    img: 'https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&w=900&q=80',  desc: 'Final walkthrough to ensure a streak-free finish.' }
                             ].map((item, i) => (
                                 <div key={i} className="relative group">
                                     <div className="overflow-hidden rounded-xl sm:rounded-2xl mb-3 sm:mb-6 shadow-lg h-32 sm:h-40 md:h-48">
@@ -615,7 +796,7 @@ Website Contact System
                 {/* Map Section */}
                 <section className="h-[380px] sm:h-[500px] w-full bg-gray-100 overflow-hidden relative group">
                     <img
-                        src="asests/map.jpeg"
+                        src="https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?auto=format&fit=crop&w=1600&q=80"
                         alt="Vaughan Service Area"
                         className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-1000 grayscale group-hover:grayscale-0"
                     />
