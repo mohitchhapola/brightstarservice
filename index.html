@@ -379,7 +379,7 @@ const ServicesPage = () => {
             images: [
                 "/asests/driveway/driveway1.webp",
                 "/asests/driveway/driveway2.webp",
-                "/asests/driveway/driveway2.avif",
+                "/asests/driveway/driveway3.avif",
 
             ]
         },
@@ -405,7 +405,7 @@ const ServicesPage = () => {
         setExpandedService(prev => (prev === serviceName ? null : serviceName));
     };
     
-    const ServiceItem = ({ service, isExpanded, onToggle }) => {
+   const ServiceItem = ({ service, isExpanded, onToggle }) => {
         const [currentIndex, setCurrentIndex] = useState(0);
 
         useEffect(() => {
@@ -451,18 +451,14 @@ const ServicesPage = () => {
 
                 {/* Collapsible Image Section */}
                 <div 
+                    // CHANGE 1: Increased max-h from 96 to [500px] to allow for a taller carousel
                     className={`transition-all duration-500 ease-in-out overflow-hidden px-4 sm:px-5 ${
-                        isExpanded ? 'max-h-96 opacity-100 pb-4 sm:pb-5' : 'max-h-0 opacity-0'
+                        isExpanded ? 'max-h-[500px] opacity-100 pb-4 sm:pb-5' : 'max-h-0 opacity-0'
                     }`}
                 >
-                    {/* group/carousel allows us to hide/show arrows on hover over the image */}
-                    <div className="relative rounded-lg border border-gray-100 overflow-hidden h-48 sm:h-56 group/carousel">
+                    {/* CHANGE 2: Made the carousel container taller (h-64 sm:h-80) and added bg-gray-50 */}
+                    <div className="relative rounded-lg border border-gray-100 overflow-hidden h-64 sm:h-80 bg-gray-50 group/carousel">
                         
-                        {/* 
-                          SLIDING TRACK: 
-                          This flex container holds all images side-by-side. 
-                          We use translateX to smoothly slide the whole container left or right. 
-                        */}
                         <div 
                             className="flex w-full h-full transition-transform duration-500 ease-in-out"
                             style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -472,12 +468,13 @@ const ServicesPage = () => {
                                     key={index}
                                     src={imgUrl}
                                     alt={`${service.name} view ${index + 1}`}
-                                    className="w-full h-full object-cover shrink-0"
+                                    // CHANGE 3: Added object-center so if it crops, it stays centered
+                                    className="w-full h-full object-cover object-center shrink-0"
                                 />
                             ))}
                         </div>
 
-                        {/* Arrows - fade in on hover */}
+                        {/* Arrows */}
                         <div className="absolute inset-0 flex items-center justify-between px-2 opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-300">
                             <button onClick={prevImage} className="bg-black/40 text-white rounded-full h-8 w-8 flex items-center justify-center hover:bg-black/60 transition-colors">
                                 <span className="material-symbols-outlined block">chevron_left</span>
@@ -493,7 +490,7 @@ const ServicesPage = () => {
                                 <div
                                     key={index}
                                     onClick={(e) => goToSlide(e, index)}
-                                    className={`w-2 h-2 rounded-full cursor-pointer transition-all duration-300 ${index === currentIndex ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/80'}`}
+                                    className={`w-2 h-2 rounded-full cursor-pointer transition-all duration-300 ${index === currentIndex ? 'bg-[#d4af37] scale-125' : 'bg-white/70 hover:bg-white'}`}
                                 ></div>
                             ))}
                         </div>
@@ -502,7 +499,6 @@ const ServicesPage = () => {
             </div>
         );
     };
-
     return (
         <div className="animate-in slide-in-from-bottom-10 duration-700">
             {/* Page Header */}
