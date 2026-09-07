@@ -1,1 +1,9 @@
 “Analyze my Google Business Profile for Kamet Cleaning & Property Service. Tell me whether my profile is verified, whether there are any visibility or indexing issues, and show me my current business name, primary category, service areas, services, website, and profile status. Do not make any changes.”
+
+
+
+“Show me my Business Profile search keywords and performance for the last 30 days. Tell me whether Google is receiving searches for ‘Kamet Cleaning & Property Service’.”
+
+
+
+“Check whether my website and Google Business Profile have consistent business name and business information.”
